@@ -9,12 +9,6 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# Database connection details
-DB_NAME = os.getenv("POSTGRES_DB", "network_db")
-DB_USER = os.getenv("POSTGRES_USER", "postgres")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "password")
-DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
-DB_PORT = os.getenv("POSTGRES_PORT", "5432")
 
 
 def check_table_and_partitions(cursor):

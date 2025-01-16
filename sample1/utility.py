@@ -2,17 +2,14 @@ import requests
 import psycopg2
 import logging
 import os
-
 from math import sqrt
 from flask import Flask
 from pyproj import Transformer
+from dotenv import load_dotenv
+from app_config import Config
 
+load_dotenv()
 
-DB_NAME = os.getenv("POSTGRES_DB", "network_db")
-DB_USER = os.getenv("POSTGRES_USER", "postgres")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "password")
-DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
-DB_PORT = os.getenv("POSTGRES_PORT", "5432")
 
 app = Flask(__name__)
 
@@ -27,11 +24,11 @@ def get_db_connection():
     """
     try:
         conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT,
+            dbname=Config.POSTGRES_DB,
+            user=Config.POSTGRES_USER,
+            password=Config.POSTGRES_PASSWORD,
+            host=Config.POSTGRES_HOST,
+            port=Config.POSTGRES_PORT,
         )
         return conn
     except psycopg2.Error as e:
@@ -67,8 +64,9 @@ def address_to_coordinates(address):
         if data["features"]:
             coordinates = data["features"][0]["geometry"]["coordinates"]
             return {"lon": coordinates[0], "lat": coordinates[1]}
+        else:
+            logging.warning(f"No features found for address: {address}")
     except requests.RequestException as e:
         logging.error(f"Error fetching coordinates for address '{address}': {e}")
     return None
 
-    return app

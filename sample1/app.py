@@ -7,34 +7,34 @@ from utility import (
     wgs84_to_lambert93,
 )
 
-app = Flask(__name__)
-
-
 def create_app(config_class="app_config.Config"):
+    """
+    Create and configure the Flask app.
+    """
+    flask_app = Flask(__name__)
     # Configure logging
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
     try:
-        app = Flask(__name__)
-        app.config.from_object(config_class)
+        flask_app.config.from_object(config_class)
         logging.info(f"Loaded configuration: {config_class}")
     except ImportError as e:
         logging.error(f"Error importing configuration '{config_class}': {e}")
         raise
 
-    # Register routes
-    register_routes(app)
+    # Register routes to the instance-specific app
+    register_routes(flask_app)
 
-    return app
+    return flask_app
 
 
-def register_routes(app):
+def register_routes(flask_app):
     """
     Register all routes with the Flask app.
     """
 
-    @app.route("/api/", methods=["GET"])
+    @flask_app.route("/api/", methods=["GET"])
     def get_network_coverage():
         address = request.args.get("q")
         if not address:
@@ -58,7 +58,7 @@ def register_routes(app):
 
         # Query database
         try:
-            MAX_DISTANCE = 3000  # radius to search aroud coordinate in meters
+            MAX_DISTANCE = 3000  # radius to search around coordinates in meters
             conn = get_db_connection()
             cursor = conn.cursor()
             query = f"""
@@ -103,10 +103,8 @@ def register_routes(app):
             return jsonify({"message": "No network coverage found."}), 200
         return jsonify(available_networks)
 
-    return app
 
-
-app = create_app()
-
+# Application entry point
 if __name__ == "__main__":
+    app = create_app()
     app.run(host="0.0.0.0", port=5000)
