@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: network_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  python_app:
+    build:
+      context: .
+    depends_on:
+      - postgres
+    environment:
+      FLASK_APP: app.py
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: network_db
+      POSTGRES_HOST: postgres
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+    command: bash /app/entrypoint.sh
+
+volumes:
+  postgres_data:
