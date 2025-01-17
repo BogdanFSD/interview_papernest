@@ -1,5 +1,5 @@
 import pytest
-from app.app import create_app
+from sample1.app import create_app
 import sys
 import os
 

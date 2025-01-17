@@ -1,5 +1,5 @@
 import psycopg2
-from app.utility import get_db_connection
+from sample1.utility import get_db_connection
 
 
 def test_db_connection():

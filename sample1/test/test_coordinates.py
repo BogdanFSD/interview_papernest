@@ -1,4 +1,4 @@
-from app.utility import wgs84_to_lambert93, distance_lambert93
+from sample1.utility import wgs84_to_lambert93, distance_lambert93
 
 
 def test_wgs84_to_lambert93():

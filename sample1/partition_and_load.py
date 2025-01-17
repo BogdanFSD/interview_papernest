@@ -1,6 +1,5 @@
 import psycopg2
 import pandas as pd
-import os
 import logging
 from utility import get_db_connection
 

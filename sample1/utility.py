@@ -1,7 +1,6 @@
 import requests
 import psycopg2
 import logging
-import os
 from math import sqrt
 from flask import Flask
 from pyproj import Transformer

@@ -1,5 +1,5 @@
 import requests_mock
-from app.utility import address_to_coordinates
+from sample1.utility import address_to_coordinates
 
 
 def test_address_to_coordinates():

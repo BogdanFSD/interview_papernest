@@ -1,17 +1,17 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /sample1
 
 RUN apt-get update && apt-get install -y \
     libpq-dev gcc curl postgresql-client && \
     apt-get clean
 
-COPY . /app/
+COPY . /sample1/
 
 # Ensure /app is a package by adding __init__.py
-RUN touch /app/__init__.py
+RUN touch /sample1/__init__.py
 
-ENV PYTHONPATH=/app:/app/sample1
+ENV PYTHONPATH=/sample1
 
 RUN pip install --no-cache-dir -r requirements.txt
 
