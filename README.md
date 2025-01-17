@@ -3,16 +3,18 @@
 # Network Coverage API
 
 ## Overview
-The **Network Coverage API** is a Flask-based application that provides network coverage information for specific locations by querying a PostgreSQL database. The project includes Dockerized components for easy deployment and testing.
+The **Network Coverage API** is a project designed to fetch and display network coverage data for specific locations by querying a database. The project is implemented using two solutions: Flask-based and Django-based, both of which are Dockerized for easy deployment
 
 ## Features
-- RESTful API to retrieve network coverage information.
-- Integration with a geocoding API to convert addresses into coordinates.
-- PostgreSQL database with partitioned tables for efficient querying.
-- Automated testing using pytest.
-- Docker support for containerized deployment.
+-RESTful API to retrieve network coverage data for specific locations.
+-PostgreSQL database with efficient querying capabilities.
+-Integration with a geocoding service for address-to-coordinate conversion.
+-Dockerized architecture for easy setup and deployment.
+-Automated migrations and data seeding in the Django-based solution.
+-Flexible, scalable solutions that can adapt to future requirements.
 
 ## Requirements
+
 ### Local Setup
 - Python 3.11
 - PostgreSQL 15
@@ -35,7 +37,8 @@ To deploy the project with Docker Compose:
    ```bash
    git clone https://github.com/BohdanFSD/interview_papernest.git
    cd interview_papernest
-   cd sample1
+   cd sample1 # for Flask solution
+   cd sample2 # for Django solution
    ```
 
 2. Build and start the containers:
@@ -43,7 +46,9 @@ To deploy the project with Docker Compose:
    docker-compose up --build
    ```
 
-3. The API will be available at `http://localhost:5000`.
+3. The API will be available at
+- Flask Solution: `http://localhost:5000`
+- Django Solution: `http://localhost:8000`
 
 ### Building and Running Individually
 1. Build the Docker image:
@@ -73,6 +78,67 @@ To deploy the project with Docker Compose:
        -p 5000:5000 \
        network-coverage-api
    ```
+# Flask-Based Solution
+## API Endpoints
+### GET `/api/`
+#### Parameters:
+- `q`: Address string to geocode and retrieve network coverage.
+
+#### Example Request:
+```bash
+curl "http://localhost:5000/api/?q=42+rue+papernest+75011+Paris"
+```
+
+#### Example Response:
+```json
+{
+  "Bouygues": {
+    "2G": true,
+    "3G": true,
+    "4G": false
+  },
+  "Free": {
+    "2G": false,
+    "3G": true,
+    "4G": true
+  },
+  "Orange": {
+    "2G": false,
+    "3G": false,
+    "4G": false
+  },
+  "SFR": {
+    "2G": true,
+    "3G": false,
+    "4G": false
+  }
+}
+```
+
+# Django-Based Solution
+## Key Features
+- Automated migrations.
+- Data loading post-migration using Django's post_migrate signal.
+- Built-in test coverage for API endpoints, commands, and utility functions.
+
+## Setup (Without Docker)
+1. install th dependencies:
+```
+pip install -r requirements.txt
+```
+2. Configure PostgreSQL:
+- Create database and set environment variables in a `.env` file
+3. Apply migrations and load data:
+```commandline
+python manage.py makemigrations
+python manage.py migrate
+python manage.py load_csv /path/to/your/data.csv
+```
+4. Start Django server:
+```commandline
+python manage.py runserver
+```
+5. Access the API at `http://127.0.0.1:8000`.
 
 ## API Endpoints
 ### GET `/api/`
@@ -110,6 +176,18 @@ curl "http://localhost:5000/api/?q=42+rue+papernest+75011+Paris"
 }
 ```
 
+## Key Differences Between Flask and Django Solutions
+
+| **Aspect**             | **Flask Solution**                        | **Django Solution**                          |
+|-------------------------|-------------------------------------------|----------------------------------------------|
+| **Framework**           | Flask                                    | Django                                       |
+| **Database Management** | Managed manually                         | Automated migrations and post-migration seed |
+| **Ease of Scaling**     | Requires more manual effort              | Built-in scalability tools                   |
+| **Test Coverage**       | Minimal coverage included                | Detailed tests for API, utilities, and tasks |
+| **Background Tasks**    | None                                     | Celery with Redis for background processing  |
+
+
+
 #### Differences from Original Specification
 In the task's example response, the precision requirement was lower, and coverage data was likely more specific to addresses. However, in this project, results are derived from searching within a **3,000-meter radius** around the provided location. This distance was chosen based on the average size of a town, ensuring results are sufficiently accurate while simplifying processing using the available data.
 
@@ -144,20 +222,16 @@ Although querying a CSV file is marginally faster in this specific use case tach
 4. Indexing: The partitioned structure and indexes in PostgreSQL significantly optimize query times for large datasets compared to sequentially reading a CSV.
 5. Maintainability: PostgreSQL offers tools and features like backups, replication, and extensions that enhance maintainability over time.
 
-## Testing
-Automated tests are included in the `test/` directory. To run the tests:
-
-1. Ensure the application is running with a test database.
-2. Run pytest:
-   ```bash
-   pytest
-   ```
-
-
-## Explanation of Solution
-### Flask-based Implementation
-This project uses Flask to create a lightweight RESTful API for handling network coverage queries. Flask was chosen for its simplicity and flexibility, making it a suitable framework for rapid prototyping and smaller web services like this one.
-
 
 ## Contributing
 Contributions are welcome! Please submit issues or pull requests on the [GitHub repository](https://github.com/BohdanFSD/interview_papernest).
+
+## Summary
+This project offers two scalable solutions to handle network coverage queries: Flask for simplicity and Django for robustness. Both solutions are Dockerized, ensuring easy deployment and scalability. Whether you prefer minimal frameworks like Flask or comprehensive ones like Django, this project demonstrates how both approaches can solve real-world problems effectively.
+
+
+
+
+
+
+
