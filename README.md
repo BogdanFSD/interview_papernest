@@ -147,7 +147,7 @@ python manage.py runserver
 
 #### Example Request:
 ```bash
-curl "http://localhost:5000/api/?q=42+rue+papernest+75011+Paris"
+curl "http://localhost:8000/api/?q=42+rue+papernest+75011+Paris"
 ```
 
 #### Example Response:
