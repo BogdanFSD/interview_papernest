@@ -6,12 +6,12 @@
 The **Network Coverage API** is a project designed to fetch and display network coverage data for specific locations by querying a database. The project is implemented using two solutions: Flask-based and Django-based, both of which are Dockerized for easy deployment
 
 ## Features
--RESTful API to retrieve network coverage data for specific locations.
--PostgreSQL database with efficient querying capabilities.
--Integration with a geocoding service for address-to-coordinate conversion.
--Dockerized architecture for easy setup and deployment.
--Automated migrations and data seeding in the Django-based solution.
--Flexible, scalable solutions that can adapt to future requirements.
+- RESTful API to retrieve network coverage data for specific locations.
+- PostgreSQL database with efficient querying capabilities.
+- Integration with a geocoding service for address-to-coordinate conversion.
+- Dockerized architecture for easy setup and deployment.
+- Automated migrations and data seeding in the Django-based solution.
+- Flexible, scalable solutions that can adapt to future requirements.
 
 ## Requirements
 
